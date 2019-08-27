@@ -1,0 +1,11 @@
+
+server:
+  port: 8082
+  servlet:
+    context-path: /hello
+
+spring:
+  mvc:
+    view:
+      prefix: /jsp/
+      suffix: .jsp
