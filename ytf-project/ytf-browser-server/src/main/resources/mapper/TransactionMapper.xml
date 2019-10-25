@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cnhic.hy.htraced.ytf.server.dao.TransactionMapper" >
+<sql id="allColumns">
+    id,blockHash,blockNumber,`from`,`to`,`hash`,`value`,nonce,`input`,gas,gasPrice,txFee,contractAddress
+</sql>
+    <select id="getTransactionById" resultType="transaction" parameterType="int">
+        select <include refid="allColumns"></include>
+        from transaction
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTransactionByHash" resultType="transaction" parameterType="string">
+        select <include refid="allColumns"></include>
+        from `transaction`
+        <where>
+            <if test="hash!=null">
+                hash=#{hash}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTransactionByMap" parameterType="map" resultType="transaction">
+        select <include refid="allColumns"></include>
+        from transaction
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="blockHash != null and blockHash!=''">
+                and blockHash=#{blockHash}
+            </if>
+            <if test="blockNumber != null and blockNumber!=''">
+                and blockNumber=#{blockNumber}
+            </if>
+            <if test="from != null and from!=''">
+                and from=#{from}
+            </if>
+            <if test="to != null and to!=''">
+                and to=#{to}
+            </if>
+            <if test="hash != null and hash!=''">
+                and hash=#{hash}
+            </if>
+            <if test="value != null and value!=''">
+                and value=#{value}
+            </if>
+            <if test="nonce != null and nonce!=''">
+                and nonce=#{nonce}
+            </if>
+            <if test="input != null and input!=''">
+                and input=#{input}
+            </if>
+            <if test="gas != null and gas!=''">
+                and gas=#{gas}
+            </if>
+            <if test="gasPrice != null and gasPrice!=''">
+                and gasPrice=#{gasPrice}
+            </if>
+            <if test="contractAddress != null and contractAddress!=''">
+                and contractAddress=#{contractAddress}
+            </if>
+            <if test="txFee != null and txFee!=''">
+                and txFee=#{txFee}
+            </if>
+        </where>
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getTransactionCountByMap" parameterType="map" resultType="int">
+      select count(1)
+      from transaction
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="blockHash != null and blockHash!=''">
+                and blockHash=#{blockHash}
+            </if>
+            <if test="blockNumber != null and blockNumber!=''">
+                and blockNumber=#{blockNumber}
+            </if>
+            <if test="from != null and from!=''">
+                and from=#{from}
+            </if>
+            <if test="to != null and to!=''">
+                and to=#{to}
+            </if>
+            <if test="hash != null and hash!=''">
+                and hash=#{hash}
+            </if>
+            <if test="value != null and value!=''">
+                and value=#{value}
+            </if>
+            <if test="nonce != null and nonce!=''">
+                and nonce=#{nonce}
+            </if>
+            <if test="input != null and input!=''">
+                and input=#{input}
+            </if>
+            <if test="gas != null and gas!=''">
+                and gas=#{gas}
+            </if>
+            <if test="gasPrice != null and gasPrice!=''">
+                and gasPrice=#{gasPrice}
+            </if>
+            <if test="contractAddress != null and contractAddress!=''">
+                and contractAddress=#{contractAddress}
+            </if>
+            <if test="txFee != null and txFee!=''">
+                and txFee=#{txFee}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertTransaction" parameterType="transaction">
+        insert into transaction  values (
+        #{id},
+        #{blockHash},
+        #{blockNumber},
+        #{from},
+        #{to},
+        #{hash},
+        #{value},
+        #{nonce},
+        #{input},
+        #{gas},
+        #{gasPrice},
+        #{txFee},
+        #{contractAddress}
+        );
+    </insert>
+
+    <update id="updateTransaction" parameterType="transaction">
+        update transaction set
+        <trim suffixOverrides=",">
+            <if test="id != null and id!=''">
+                 id=#{id},
+            </if>
+            <if test="blockHash != null and blockHash!=''">
+                 blockHash=#{blockHash},
+            </if>
+            <if test="blockNumber != null and blockNumber!=''">
+                 blockNumber=#{blockNumber},
+            </if>
+            <if test="from != null and from!=''">
+                 from=#{from},
+            </if>
+            <if test="to != null and to!=''">
+                 to=#{to},
+            </if>
+            <if test="hash != null and hash!=''">
+                 hash=#{hash},
+            </if>
+            <if test="value != null and value!=''">
+                 value=#{value},
+            </if>
+            <if test="nonce != null and nonce!=''">
+                 nonce=#{nonce},
+            </if>
+            <if test="input != null and input!=''">
+                 input=#{input},
+            </if>
+            <if test="gas != null and gas!=''">
+                 gas=#{gas},
+            </if>
+            <if test="gasPrice != null and gasPrice!=''">
+                 gasPrice=#{gasPrice},
+            </if>
+            <if test="contractAddress != null and contractAddress!=''">
+                 contractAddress=#{contractAddress},
+            </if>
+            <if test="txFee != null and txFee!=''">
+                 txFee=#{txFee},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteTransactionById" parameterType="int">
+        delete from transaction where id=#{id}
+    </delete>
+
+    <select id="getSumValue" resultType="string">
+        select sum(value) from transaction
+    </select>
+
+    <select id="getTransactionByAddr" resultType="transaction" parameterType="string">
+        select <include refid="allColumns"></include>
+        from transaction
+            where    `from` =#{address} or `to`=#{address}
+    </select>
+</mapper>

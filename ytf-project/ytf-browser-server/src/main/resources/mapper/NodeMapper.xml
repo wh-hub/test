@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cnhic.hy.htraced.ytf.server.dao.NodeMapper" >
+<sql id="allColumns">
+    id,name,type,address,area
+</sql>
+    <select id="getNodeById" resultType="node" parameterType="int">
+        select <include refid="allColumns"></include>
+        from node
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getNodeByMap" parameterType="map" resultType="node">
+        select <include refid="allColumns"></include>
+        from node
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="name != null and name!=''">
+                and name=#{name}
+            </if>
+            <if test="type != null and type!=''">
+                and type=#{type}
+            </if>
+            <if test="address != null and address!=''">
+                and address=#{address}
+            </if>
+            <if test="area != null and area!=''">
+                and area=#{area}
+            </if>
+        </where>
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getNodeCountByMap" parameterType="map" resultType="int">
+      select count(1)
+      from node
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="name != null and name!=''">
+                and name=#{name}
+            </if>
+            <if test="type != null and type!=''">
+                and type=#{type}
+            </if>
+            <if test="address != null and address!=''">
+                and address=#{address}
+            </if>
+            <if test="area != null and area!=''">
+                and area=#{area}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertNode" parameterType="node">
+        insert into node  values (
+        #{id},
+        #{name},
+        #{type},
+        #{address},
+        #{area}
+        );
+    </insert>
+
+    <update id="updateNode" parameterType="node">
+        update node set
+        <trim suffixOverrides=",">
+            <if test="id != null and id!=''">
+                 id=#{id},
+            </if>
+            <if test="name != null and name!=''">
+                 name=#{name},
+            </if>
+            <if test="type != null and type!=''">
+                 type=#{type},
+            </if>
+            <if test="address != null and address!=''">
+                 address=#{address},
+            </if>
+            <if test="area != null and area!=''">
+                 area=#{area},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteNodeById" parameterType="int">
+        delete from node where id=#{id}
+    </delete>
+    <select id="getNodeByAddr" parameterType="string" resultType="node">
+        select <include refid="allColumns"></include>
+        from node
+        <where>
+            <if test="address!=null">
+                address=#{address}
+            </if>
+        </where>
+    </select>
+    <select id="getAreas" resultType="string">
+        SELECT DISTINCT `area` FROM node
+    </select>
+
+</mapper>

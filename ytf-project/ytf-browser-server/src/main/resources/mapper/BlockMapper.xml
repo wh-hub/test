@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cnhic.hy.htraced.ytf.server.dao.BlockMapper" >
+<sql id="allColumns">
+    id,number,hash,miner,gasLimit,gasUsed,txCount,size,timestamp
+</sql>
+    <select id="getBlockById" resultType="block" parameterType="int">
+        select <include refid="allColumns"></include>
+        from block
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+    <select id="getBlockByHash" resultType="block" parameterType="string">
+        select <include refid="allColumns"></include>
+        from block
+        <where>
+            <if test="hash!=null">
+                hash=#{hash}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBlockByMap" parameterType="map" resultType="block">
+        select <include refid="allColumns"></include>
+        from block
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="number != null and number!=''">
+                and number=#{number}
+            </if>
+            <if test="hash != null and hash!=''">
+                and hash=#{hash}
+            </if>
+            <if test="miner != null and miner!=''">
+                and miner=#{miner}
+            </if>
+            <if test="gasLimit != null and gasLimit!=''">
+                and gasLimit=#{gasLimit}
+            </if>
+            <if test="gasUsed != null and gasUsed!=''">
+                and gasUsed=#{gasUsed}
+            </if>
+            <if test="txCount != null and txCount!=''">
+                and txCount=#{txCount}
+            </if>
+            <if test="size != null and size!=''">
+                and size=#{size}
+            </if>
+            <if test="timestamp != null and timestamp!=''">
+                and timestamp=#{timestamp}
+            </if>
+        </where>
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getBlockCountByMap" parameterType="map" resultType="int">
+      select count(1)
+      from block
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="number != null and number!=''">
+                and number=#{number}
+            </if>
+            <if test="hash != null and hash!=''">
+                and hash=#{hash}
+            </if>
+            <if test="miner != null and miner!=''">
+                and miner=#{miner}
+            </if>
+            <if test="gasLimit != null and gasLimit!=''">
+                and gasLimit=#{gasLimit}
+            </if>
+            <if test="gasUsed != null and gasUsed!=''">
+                and gasUsed=#{gasUsed}
+            </if>
+            <if test="txCount != null and txCount!=''">
+                and txCount=#{txCount}
+            </if>
+            <if test="size != null and size!=''">
+                and size=#{size}
+            </if>
+            <if test="timestamp != null and timestamp!=''">
+                and timestamp=#{timestamp}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertBlock" parameterType="block">
+        insert into block  values (
+        #{id},
+        #{number},
+        #{hash},
+        #{miner},
+        #{gasLimit},
+        #{gasUsed},
+        #{txCount},
+        #{size},
+        #{timestamp}
+        );
+    </insert>
+
+    <update id="updateBlock" parameterType="block">
+        update block set
+        <trim suffixOverrides=",">
+            <if test="id != null and id!=''">
+                 id=#{id},
+            </if>
+            <if test="number != null and number!=''">
+                 number=#{number},
+            </if>
+            <if test="hash != null and hash!=''">
+                 hash=#{hash},
+            </if>
+            <if test="miner != null and miner!=''">
+                 miner=#{miner},
+            </if>
+            <if test="gasLimit != null and gasLimit!=''">
+                 gasLimit=#{gasLimit},
+            </if>
+            <if test="gasUsed != null and gasUsed!=''">
+                 gasUsed=#{gasUsed},
+            </if>
+            <if test="txCount != null and txCount!=''">
+                 txCount=#{txCount},
+            </if>
+            <if test="size != null and size!=''">
+                 size=#{size},
+            </if>
+            <if test="timestamp != null and timestamp!=''">
+                timestamp=#{timestamp},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteBlockById" parameterType="int">
+        delete from block where id=#{id}
+    </delete>
+
+</mapper>

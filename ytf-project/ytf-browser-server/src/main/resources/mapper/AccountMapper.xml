@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cnhic.hy.htraced.ytf.server.dao.AccountMapper" >
+<sql id="allColumns">
+    id,address,balance,txNumber,pwd,privateKey,publicKey
+</sql>
+    <select id="getAccountById" resultType="account" parameterType="int">
+        select <include refid="allColumns"></include>
+        from account
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+    <select id="getAccountByAddress" resultType="account" parameterType="string">
+        select <include refid="allColumns"></include>
+        from account
+        <where>
+            <if test="address!=null">
+                address=#{address}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAccountByMap" parameterType="map" resultType="account">
+        select <include refid="allColumns"></include>
+        from account
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="address != null and address!=''">
+                and address=#{address}
+            </if>
+            <if test="balance != null and balance!=''">
+                and balance=#{balance}
+            </if>
+            <if test="txNumber != null and txNumber!=''">
+                and txNumber=#{txNumber}
+            </if>
+            <if test="pwd != null and pwd!=''">
+                and pwd=#{pwd}
+            </if>
+            <if test="privateKey != null and privateKey!=''">
+                and privateKey=#{privateKey}
+            </if>
+            <if test="publicKey != null and publicKey!=''">
+                and publicKey=#{publicKey}
+            </if>
+        </where>
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getAccountCountByMap" parameterType="map" resultType="int">
+      select count(1)
+      from account
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="address != null and address!=''">
+                and address=#{address}
+            </if>
+            <if test="balance != null and balance!=''">
+                and balance=#{balance}
+            </if>
+            <if test="txNumber != null and txNumber!=''">
+                and txNumber=#{txNumber}
+            </if>
+            <if test="pwd != null and pwd!=''">
+                and pwd=#{pwd}
+            </if>
+            <if test="privateKey != null and privateKey!=''">
+                and privateKey=#{privateKey}
+            </if>
+            <if test="publicKey != null and publicKey!=''">
+                and publicKey=#{publicKey}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertAccount" parameterType="account">
+        insert into account  values (
+        #{id},
+        #{address},
+        #{balance},
+        #{txNumber},
+        #{pwd},
+        #{privateKey},
+        #{publicKey}
+        );
+    </insert>
+
+    <update id="updateAccount" parameterType="account">
+        update account set
+        <trim suffixOverrides=",">
+            <if test="id != null and id!=''">
+                 id=#{id},
+            </if>
+            <if test="address != null and address!=''">
+                 address=#{address},
+            </if>
+            <if test="balance != null and balance!=''">
+                 balance=#{balance},
+            </if>
+            <if test="txNumber != null and txNumber!=''">
+                 txNumber=#{txNumber},
+            </if>
+            <if test="pwd != null and pwd!=''">
+                 pwd=#{pwd},
+            </if>
+            <if test="privateKey != null and privateKey!=''">
+                 privateKey=#{privateKey},
+            </if>
+            <if test="publicKey != null and publicKey!=''">
+                 publicKey=#{publicKey},
+            </if>
+        </trim>
+        where address=#{address}
+    </update>
+
+    <delete id="deleteAccountById" parameterType="int">
+        delete from account where id=#{id}
+    </delete>
+
+</mapper>

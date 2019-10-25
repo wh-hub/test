@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.cnhic.hy.htraced.ytf.server.dao.SourceMapper" >
+<sql id="allColumns">
+    id,context,`time`
+</sql>
+    <select id="getSourceById" resultType="source" parameterType="int">
+        select <include refid="allColumns"></include>
+        from source
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getSourceByMap" parameterType="map" resultType="source">
+        select <include refid="allColumns"></include>
+        from source
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="context != null and context!=''">
+                and context=#{context}
+            </if>
+            <if test="time != null and time!=''">
+                and `time`=#{time}
+            </if>
+        </where>
+        <if test="beginPos != null and beginPos!='' and pageSize != null  and pageSize !='' ">
+            limit #{beginPos},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getSourceCountByMap" parameterType="map" resultType="int">
+      select count(1)
+      from source
+        <where>
+            <if test="id != null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="context != null and context!=''">
+                and context=#{context}
+            </if>
+            <if test="time != null and time!=''">
+                and `time`=#{time}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSource" parameterType="source">
+        insert into source  values (
+        #{id},
+        #{context},
+        #{time}
+        );
+    </insert>
+
+
+
+    <delete id="deleteSourceById" parameterType="int">
+        delete from source where id=#{id}
+    </delete>
+
+</mapper>
